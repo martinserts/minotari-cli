@@ -46,6 +46,7 @@ pub async fn scan(
         println!("Found account: {:?}", account);
 
         let key_manager = account.get_key_manager(password).await.map_err(ScanError::Fatal)?;
+        println!("TODO: base url: {}", base_url);
         let mut scanner = HttpBlockchainScanner::new(base_url.to_string(), key_manager.clone())
             .await
             .map_err(|e| ScanError::Intermittent(e.to_string()))?;
@@ -336,6 +337,7 @@ async fn check_for_reorgs(
             .get_header_by_height(block.height)
             .await
             .map_err(|e| anyhow::anyhow!("Failed to get header by height: {}", e))?;
+        println!("TODO: height: {}, chain_block: {:?}", block.height, &chain_block);
         if let Some(chain_block) = chain_block {
             if chain_block.hash == block.hash {
                 // Block matches, no reorg at this height.
